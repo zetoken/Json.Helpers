@@ -11,6 +11,13 @@
     <Configurations>Debug;Release</Configurations>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <AssemblyName>ZTn.Json.Helpers</AssemblyName>
+    <AssemblyVersion>1.0.0.1</AssemblyVersion>
+    <FileVersion>1.0.0.1</FileVersion>
+    <PackageProjectUrl>https://github.com/zetoken/Json.Helpers</PackageProjectUrl>
+    <PackageTags>csharp netstandard json</PackageTags>
+    <Version>1.0.0.1</Version>
+    <PackageLicenseUrl>https://github.com/zetoken/Json.Helpers/blob/master/LICENSE</PackageLicenseUrl>
+    <RepositoryUrl>https://github.com/zetoken/Json.Helpers</RepositoryUrl>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
