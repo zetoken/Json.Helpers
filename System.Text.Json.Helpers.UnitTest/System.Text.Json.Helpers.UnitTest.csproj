@@ -17,7 +17,8 @@
     <PackageReference Include="NUnit" Version="3.12.0" />
     <PackageReference Include="NUnit3TestAdapter" Version="3.17.0" />
   </ItemGroup>
+
   <ItemGroup>
-    <ProjectReference Include="..\Json.Helpers\Json.Helpers.csproj" />
+    <ProjectReference Include="..\System.Text.Json.Helpers\System.Text.Json.Helpers.csproj" />
   </ItemGroup>
 </Project>
