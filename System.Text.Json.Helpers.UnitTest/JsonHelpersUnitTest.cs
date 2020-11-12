@@ -23,49 +23,37 @@ namespace ZTn.Json.Helpers.UnitTest
         }
 
         [Test]
-        [Platform(Include ="NetCore")]
-        public void KeyValuePairToJson_NetCore()
+        public void KeyValuePairToJson()
         {
             var result = new KeyValuePair<string, double>("Pi", 3.14159).ToJson();
 
-            Assert.AreEqual(PiObjectJson, result, "Expected to fail with .net 4.x framework (https://github.com/dotnet/runtime/issues/435)");
-        }
-
-        [Test]
-        [Platform(Include ="Net")]
-        public void KeyValuePairToJson_NetFramework()
-        {
-            var result = new KeyValuePair<string, double>("Pi", 3.14159).ToJson();
-
+#if NETFRAMEWORK
             Assert.AreEqual(PiObjectJsonNetFramework, result, "Expected to fail with .net core (https://github.com/dotnet/runtime/issues/435)");
+#else
+            Assert.AreEqual(PiObjectJson, result, "Expected to fail with .net 4.x framework (https://github.com/dotnet/runtime/issues/435)");
+#endif
         }
 
-        [Test]
-        [Platform(Include ="NetCore")]
-        public void KeyValuePairToIndentedJson_NetCore()
-        {
-            var result = new KeyValuePair<string, double>("Pi", 3.14159).ToPrettyJson();
-            var expected =
-                "{" + Environment.NewLine +
-                "  \"Key\": \"Pi\"," + Environment.NewLine +
-                "  \"Value\": 3.14159" + Environment.NewLine +
-                "}";
-
-            Assert.AreEqual(expected, result, "Expected to fail with .net 4.x framework (https://github.com/dotnet/runtime/issues/435)");
-        }
 
         [Test]
-        [Platform(Include ="Net")]
-        public void KeyValuePairToIndentedJson_NetFramework()
+        public void KeyValuePairToIndentedJson()
         {
             var result = new KeyValuePair<string, double>("Pi", 3.14159).ToPrettyJson();
+#if NETFRAMEWORK
             var expected =
                 "{" + Environment.NewLine +
                 "  \"Key\": \"Pi\"," + Environment.NewLine +
                 "  \"Value\": 3.1415899999999999" + Environment.NewLine +
                 "}";
+#else
+            var expected =
+                "{" + Environment.NewLine +
+                "  \"Key\": \"Pi\"," + Environment.NewLine +
+                "  \"Value\": 3.14159" + Environment.NewLine +
+                "}";
+#endif
 
-            Assert.AreEqual(expected, result, "Expected to fail with .net core (https://github.com/dotnet/runtime/issues/435)");
+            Assert.AreEqual(expected, result);
         }
 
         [Test]
