@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Text.Json;
+using System.Threading.Tasks;
 
 namespace ZTn.System.Text.Json.Helpers
 {
@@ -41,7 +42,7 @@ namespace ZTn.System.Text.Json.Helpers
                 throw new ArgumentNullException(nameof(stream));
             }
 
-            return (T)JsonSerializer.DeserializeAsync(stream, typeof(T), options).Result;
+            return JsonSerializer.DeserializeAsync<T>(stream, options).AsTask().Result;
         }
 
         /// <summary>
@@ -58,10 +59,9 @@ namespace ZTn.System.Text.Json.Helpers
                 throw new ArgumentNullException(nameof(fileName));
             }
 
-            using (var stream = new FileStream(fileName, FileMode.Open))
-            {
-                return (T)JsonSerializer.DeserializeAsync(stream, typeof(T), options).Result;
-            }
+            using var stream = File.OpenRead(fileName);
+
+            return JsonSerializer.DeserializeAsync<T>(stream, options).AsTask().Result;
         }
 
         /// <summary>
@@ -97,12 +97,9 @@ namespace ZTn.System.Text.Json.Helpers
                 throw new ArgumentNullException(nameof(stream));
             }
 
-            var jsonOptions = options.MakeItPretty();
+            using var jsonWriter = new Utf8JsonWriter(stream);
 
-            using (var jsonWriter = new Utf8JsonWriter(stream, jsonOptions.ToJsonWriterOptions()))
-            {
-                JsonSerializer.Serialize(jsonWriter, instance, jsonOptions);
-            }
+            JsonSerializer.Serialize(jsonWriter, instance, options);
         }
 
         /// <summary>
@@ -118,10 +115,9 @@ namespace ZTn.System.Text.Json.Helpers
                 throw new ArgumentNullException(nameof(fileName));
             }
 
-            using (var stream = new FileStream(fileName, FileMode.Open))
-            {
-                instance.WriteAsJson(stream, options);
-            }
+            using var stream = File.Create(fileName);
+
+            instance.WriteAsJson(stream, options);
         }
 
         /// <summary>
@@ -139,10 +135,9 @@ namespace ZTn.System.Text.Json.Helpers
 
             var jsonOptions = options.MakeItPretty();
 
-            using (var jsonWriter = new Utf8JsonWriter(stream, jsonOptions.ToJsonWriterOptions()))
-            {
-                JsonSerializer.Serialize(jsonWriter, instance, jsonOptions);
-            }
+            using var jsonWriter = new Utf8JsonWriter(stream, jsonOptions.ToJsonWriterOptions());
+
+            JsonSerializer.Serialize(jsonWriter, instance, jsonOptions);
         }
 
         /// <summary>
@@ -158,10 +153,11 @@ namespace ZTn.System.Text.Json.Helpers
                 throw new ArgumentNullException(nameof(fileName));
             }
 
-            using (var stream = new FileStream(fileName, FileMode.Open))
-            {
-                instance.WriteAsPrettyJson(stream, options);
-            }
+            var jsonOptions = options.MakeItPretty();
+
+            using var stream = File.Create(fileName);
+
+            instance.WriteAsPrettyJson(stream, jsonOptions);
         }
 
         /// <summary>
@@ -197,5 +193,114 @@ namespace ZTn.System.Text.Json.Helpers
                 Indented = options.WriteIndented
             };
         }
+
+        #region >> Async Methods
+
+        /// <summary>
+        /// Asynchronously reads (deserializes) an instance of type <typeparamref Name="T"/> from a JSON stream.
+        /// The stream is safely disposed by the method.
+        /// </summary>
+        /// <typeparam name="T">Target instance type.</typeparam>
+        /// <param name="stream">JSON source stream.</param>
+        /// <param name="options">JSON options.</param>
+        /// <returns>A new instance of <typeparamref Name="T"/> read from <paramref Name="stream"/>.</returns>
+        public static async Task<T> ReadAsJsonAsync<T>(this Stream stream, JsonSerializerOptions options = null)
+        {
+            if (stream == null)
+            {
+                throw new ArgumentNullException(nameof(stream));
+            }
+
+            return await JsonSerializer.DeserializeAsync<T>(stream, options).AsTask();
+        }
+
+        /// <summary>
+        /// Asynchronously reads (deserializes) an instance of type <typeparamref Name="T"/> from a JSON file.
+        /// </summary>
+        /// <typeparam name="T">Target instance type.</typeparam>
+        /// <param name="fileName">Path to source JSON file.</param>
+        /// <param name="options">JSON options.</param>
+        /// <returns>A new instance of <typeparamref Name="T"/> read from <paramref Name="fileName"/>.</returns>
+        public static async Task<T> ReadAsJsonAsync<T>(this string fileName, JsonSerializerOptions options = null)
+        {
+            if (fileName == null)
+            {
+                throw new ArgumentNullException(nameof(fileName));
+            }
+
+            using var stream = File.OpenRead(fileName);
+
+            return await JsonSerializer.DeserializeAsync<T>(stream, options);
+        }
+
+        /// <summary>
+        /// Writes (serializes) an instance to a stream as JSON.
+        /// </summary>
+        /// <param name="instance">Source instance.</param>
+        /// <param name="stream">Target stream.</param>
+        /// <param name="options">JSON options.</param>
+        public static async Task WriteAsJsonAsync(this object instance, Stream stream, JsonSerializerOptions options = null)
+        {
+            if (stream == null)
+            {
+                throw new ArgumentNullException(nameof(stream));
+            }
+
+            await JsonSerializer.SerializeAsync(stream, instance, options);
+        }
+
+        /// <summary>
+        /// Writes (serializes) an instance to a JSON file.
+        /// </summary>
+        /// <param name="instance">Source instance.</param>
+        /// <param name="fileName">Path to target JSON file.</param>
+        /// <param name="options">JSON options.</param>
+        public static async Task WriteAsJsonAsync(this object instance, string fileName, JsonSerializerOptions options = null)
+        {
+            if (fileName == null)
+            {
+                throw new ArgumentNullException(nameof(fileName));
+            }
+
+            using var stream = File.Create(fileName);
+
+            await instance.WriteAsJsonAsync(stream, options);
+        }
+
+        /// <summary>
+        /// Asynchronously writes (serializes) an instance to a stream as pretty JSON (indented).
+        /// </summary>
+        /// <param name="instance">Source instance.</param>
+        /// <param name="stream">Target stream.</param>
+        /// <param name="options">JSON options.</param>
+        public static async Task WriteAsPrettyJsonAsync(this object instance, Stream stream, JsonSerializerOptions options = null)
+        {
+            if (stream == null)
+            {
+                throw new ArgumentNullException(nameof(stream));
+            }
+
+            await JsonSerializer.SerializeAsync(stream, instance, options.MakeItPretty());
+        }
+
+        /// <summary>
+        /// Asynchronously writes (serializes) an instance to a pretty JSON file (indented).
+        /// </summary>
+        /// <param name="instance">Source instance.</param>
+        /// <param name="fileName">Path to target JSON file.</param>
+        /// <param name="options">JSON options.</param>
+        public static async Task WriteAsPrettyJsonAsync(this object instance, string fileName, JsonSerializerOptions options = null)
+        {
+            if (fileName == null)
+            {
+                throw new ArgumentNullException(nameof(fileName));
+            }
+
+            using var stream = File.OpenWrite(fileName);
+
+            await instance.WriteAsPrettyJsonAsync(stream, options);
+        }
+
+        #endregion
     }
 }

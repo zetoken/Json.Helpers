@@ -12,10 +12,16 @@
     <AssemblyName>ZTn.System.Text.Json.Helpers</AssemblyName>
     <PackageProjectUrl>https://github.com/zetoken/Json.Helpers</PackageProjectUrl>
     <PackageTags>csharp netstandard json</PackageTags>
-    <Version>1.0.1</Version>
+    <Version>1.1</Version>
     <PackageLicenseUrl>https://github.com/zetoken/Json.Helpers/blob/master/LICENSE</PackageLicenseUrl>
     <RepositoryUrl>https://github.com/zetoken/Json.Helpers</RepositoryUrl>
-    <PackageReleaseNotes>- new: net 5.0 is supported.</PackageReleaseNotes>
+    <PackageReleaseNotes>
+      - new: Async extension methods.
+      - fix: Write to file.
+    </PackageReleaseNotes>
+  </PropertyGroup>
+  <PropertyGroup>
+    <LangVersion>9.0</LangVersion>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="System.Text.Json" Version="5.0.0" />
