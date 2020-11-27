@@ -10,6 +10,7 @@ Some extension methods to help playing with JSON data.
 # ZTn.Json.Helpers
 
 [![NuGet Badge](https://buildstats.info/nuget/ZTn.Json.Helpers)](https://www.nuget.org/packages/ZTn.Json.Helpers/)
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fzetoken%2FJson.Helpers.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fzetoken%2FJson.Helpers?ref=badge_shield)
 
 A very simple library providing some extension methods around NewtonSoft.Json library.
 
@@ -91,3 +92,6 @@ var obj = "data.json".ReadAsJson<MyType>();
 ## Remark
 * These methods support an optional parameter of type [JsonSerializerOptions](https://docs.microsoft.com/en-us/dotnet/api/system.text.json.jsonserializeroptions) for configuration.
 * The sub-namespace "Migration" allows to use the same API as Ztn.Helpers.Json but based on System.Text.Json, allowing (I hope) an easy transition.
+
+## License
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fzetoken%2FJson.Helpers.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Fzetoken%2FJson.Helpers?ref=badge_large)
