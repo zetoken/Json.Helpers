@@ -1,23 +1,30 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0;netstandard2.1;net5.0</TargetFrameworks>
+    <RootNamespace>ZTn.Json.Helpers</RootNamespace>
+    <AssemblyName>ZTn.Json.Helpers</AssemblyName>
+    <Version>1.1.0</Version>
+  </PropertyGroup>
+
+  <PropertyGroup>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Company>ZTn</Company>
     <Authors>ZTn</Authors>
     <Product>ZTn C# Helpers</Product>
     <PackageId>ZTn.Json.Helpers</PackageId>
-    <RootNamespace>ZTn.Json.Helpers</RootNamespace>
-    <Copyright>ZTn 2012-2020</Copyright>
+    <Copyright>ZTn 2012-2021</Copyright>
     <Description>A very simple library providing some extension methods around NewtonSoft.Json library.</Description>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <AssemblyName>ZTn.Json.Helpers</AssemblyName>
     <PackageProjectUrl>https://github.com/zetoken/Json.Helpers</PackageProjectUrl>
     <PackageTags>csharp netstandard json</PackageTags>
-    <Version>1.0.1</Version>
-    <PackageLicenseUrl>https://github.com/zetoken/Json.Helpers/blob/master/LICENSE</PackageLicenseUrl>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <RepositoryUrl>https://github.com/zetoken/Json.Helpers</RepositoryUrl>
-    <PackageReleaseNotes>- new: net 5.0 is supported.</PackageReleaseNotes>
+    <PackageReleaseNotes>- update: Nuget references updated.</PackageReleaseNotes>
   </PropertyGroup>
+
   <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
   </ItemGroup>
 </Project>
